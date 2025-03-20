@@ -1,4 +1,0 @@
-# Dockerfile para projeto Django 5 com python 3.12
-from:  python:3.12-slim
-
-COPY  dest
