@@ -37,11 +37,6 @@ services:
       context: ../src/
       dockerfile: Dockerfile
     container_name: news-api
-    #image: secedu-admin-web-api
-    environment:
-      # Suas variáveis de ambiente
-      DJANGO_SETTINGS_MODULE: core.settings
-    command: python manage.py migrate
     depends_on:
       - postgres-server
     restart: always

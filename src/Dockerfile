@@ -20,4 +20,4 @@ RUN pip install -r requirements.txt
 COPY . /api
 
 #ENTRYPOINT
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "core.wsgi"]
+CMD [ "sh", "entrypoint.sh" ]
