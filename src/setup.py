@@ -19,4 +19,4 @@ def create_superuser(
         print('O superusuário existente - OK!')
 
 if __name__ == '__main__':
-    create_superuser(username='edson.filho',email='edson.filho@secedu.com.br')
+    create_superuser(username='edson.filho',email='edcastanha@gmail.com',password='mudar1234')

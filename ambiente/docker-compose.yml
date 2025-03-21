@@ -1,14 +1,11 @@
-service:
-
-# RabbitMQ - Broker
+services:
   broker-server:
     image: rabbitmq:3-management
-    container_name: queue-server
+    container_name: broker-server
     restart: always
     environment:
-      - RABBITMQ_DEFAULT_USER=jnews
-      - RABBITMQ_DEFAULT_PASS=ep4X1!br
-    ports:
+      - RABBITMQ_DEFAULT_USER=j_news
+      - RABBITMQ_DEFAULT_PASS=newsjota
       - "5672:5672"
       - "15672:15672"
       - "25676:25676"
@@ -27,8 +24,8 @@ service:
       retries: 5
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=test
-      - POSTGRES_PASSWORD=test123
+      - POSTGRES_DB=dbnewsjota
+      - POSTGRES_PASSWORD=newsjota
     ports:
       - 5432:5432
     networks:
@@ -39,14 +36,20 @@ service:
     build:
       context: ../src/
       dockerfile: Dockerfile
-    container_name: secedu-api
-    image: secedu-admin-web-api
-    command: gunicorn --workers=2 --timeout=3600 --bind=0.0.0.0:5005 core.wsgi:application
+    container_name: news-api
+    #image: secedu-admin-web-api
+    environment:
+      # Suas variáveis de ambiente
+      DJANGO_SETTINGS_MODULE: core.settings
+    command: python manage.py migrate
     depends_on:
       - postgres-server
     restart: always
     ports:
-      - "5005:5005"
+      - "8000:5005"
     networks:
       - server-hosts
-      - web_network
+
+networks:
+  server-hosts:
+    driver: bridge

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from utils.baseModel import BaseModel
 
-class News(BaseModel):
+class NewsModel(BaseModel):
     fonte = models.CharField(max_length=255, verbose_name="Fonte")
     url = models.URLField(blank=True, null=True, verbose_name="URL")
     titulo = models.CharField(max_length=255, verbose_name="Título")
@@ -14,7 +14,7 @@ class News(BaseModel):
     informacoes_adicionais = models.JSONField(blank=True, null=True, verbose_name="Informações Adicionais")
 
     def __str__(self):
-        return self.titulo
+        return str(self.titulo)
 
     class Meta:
         verbose_name = "Notícia"

@@ -5,7 +5,7 @@ Este documento contém a lista de tarefas a serem executadas neste projeto.
 ## Tarefas
 
 - [X] Definir o escopo do projeto.
-- [ ] Identificar os recursos necessários.
+- [-] Identificar os recursos necessários.
 - [X] Configurar o ambiente de desenvolvimento.
 - [X] Criar o repositório do projeto (Git).
 - [-] Desenvolver a funcionalidade principal.
