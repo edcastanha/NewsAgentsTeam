@@ -3,6 +3,7 @@
 ## Contexto:
 O Jota recebe um grande volume de notícias de diversas fontes, incluindo agências internacionais, redes sociais e envios de usuários. Essas notícias precisam ser processadas, classificadas por assunto (poder, saúde, tributos, etc.) e disponibilizadas para a equipe editorial através de uma API REST. Além disso, a Jota deseja integrar o envio de notificações via WhatsApp para notícias urgentes.
 
+Imagem - C4 Context
 
 ## Com base nesse cenário, construa uma solução que:
 
