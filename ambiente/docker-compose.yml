@@ -37,6 +37,8 @@ services:
       context: ../src/
       dockerfile: Dockerfile
     container_name: news-api
+    #command: sh entrypoint.sh
+    command: ['python', 'manage.py', 'runserver', '0.0.0.0:5005']
     depends_on:
       - postgres-server
     restart: always

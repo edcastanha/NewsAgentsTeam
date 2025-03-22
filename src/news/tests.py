@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
-from .models import News
+from .models import NewsModel
 from datetime import datetime
 
 class NewsAPITestCase(APITestCase):
@@ -20,13 +20,19 @@ class NewsAPITestCase(APITestCase):
             'tags': ['tag1', 'tag2'],
             'informacoes_adicionais': {'chave': 'valor'}
         }
-        self.news = News.objects.create(**self.news_data)
+        self.news = NewsModel.objects.create(**self.news_data)
 
     def test_create_news(self):
         url = reverse('news-list')
         response = self.client.post(url, self.news_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(News.objects.count(), 2)
+        self.assertEqual(NewsModel.objects.count(), 2)
+        # Retrieve the newly created news object (excluding the one created in setUp)
+        created_news = NewsModel.objects.exclude(id=self.news.id).first()
+        self.assertIsNotNone(created_news, "The created NewsModel instance should exist.")
+        # Assert each field in self.news_data matches the created_news field
+        for field, expected_value in self.news_data.items():
+            self.assertEqual(getattr(created_news, field), expected_value, f"Field '{field}' does not match.")
 
     def test_get_news_list(self):
         url = reverse('news-list')

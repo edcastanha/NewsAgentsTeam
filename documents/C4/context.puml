@@ -3,7 +3,6 @@
 
 !theme aws-orange
 
-' System Context Diagram
 title System Context Diagram - Jota News Processing
 
 actor "Editorial Team" as EditorialTeam
