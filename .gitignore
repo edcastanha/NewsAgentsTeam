@@ -219,5 +219,19 @@ override.tf.json
 .idea/
 *.vscode/
 
+**/staticfiles/
+**/media/
+**/static/
+**/media_root/
+**/static_root/
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+**/env/
+**/venv/
+**/ENV/
+**/env.bak/
+
 # Ignore directories for Terraform provider plugins (default behavior for providers)
 .terraform.d/
