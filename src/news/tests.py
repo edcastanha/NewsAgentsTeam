@@ -27,6 +27,12 @@ class NewsAPITestCase(APITestCase):
         response = self.client.post(url, self.news_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(NewsModel.objects.count(), 2)
+        # Retrieve the newly created news object (excluding the one created in setUp)
+        created_news = NewsModel.objects.exclude(id=self.news.id).first()
+        self.assertIsNotNone(created_news, "The created NewsModel instance should exist.")
+        # Assert each field in self.news_data matches the created_news field
+        for field, expected_value in self.news_data.items():
+            self.assertEqual(getattr(created_news, field), expected_value, f"Field '{field}' does not match.")
 
     def test_get_news_list(self):
         url = reverse('news-list')
