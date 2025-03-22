@@ -233,5 +233,7 @@ override.tf.json
 **/ENV/
 **/env.bak/
 
+**/develop/
+
 # Ignore directories for Terraform provider plugins (default behavior for providers)
 .terraform.d/
