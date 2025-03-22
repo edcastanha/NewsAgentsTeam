@@ -19,18 +19,17 @@ services:
       - server-hosts
       
 # Django - System Admin / API REST 
-  server-api:
+  django-api:
     build:
-      context: ../django_app/
+      context: ../django_api/
       dockerfile: Dockerfile
-    container_name: news-api
+    container_name: django-api
     #command: sh entrypoint.sh
     command: ['python', 'manage.py', 'runserver', '0.0.0.0:5005']
     volumes:
-      - ../django_app/:/api
+      - ../django_api/:/api
     depends_on:
       - postgres-server
-      - broker-server
     restart: always
     ports:
       - "8000:5005"
