@@ -6,8 +6,8 @@ from datetime import timedelta # jwt token
 BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-DEBUG = True
-#DEBUG = os.environ.get('MYDEBUG', False)
+
+DEBUG = os.environ.get('MYDEBUG', False)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
@@ -20,13 +20,7 @@ PG_PASSWORD = os.environ.get('PG_PASSWORD', 'newsjota')
 PG_DATABASE = os.environ.get('PG_DATABASE', 'dbnewsjota')
 PG_PORT = os.environ.get('PG_PORT', '5432')
 
-RBMQ_HOST = os.environ.get('RBMQ_HOST', 'broker-server')
-RBMQ_PORT = os.environ.get('RBMQ_PORT', '5672')
-RBMQ_USER = os.environ.get('RBMQ_USER', 'guest')
-RBMQ_PASS = os.environ.get('RBMQ_PASS', 'guest')
-BROKER_URL = os.environ.get('BROKER_URL', 'amqp://guest:guest@localhost:5672')
 #REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
-
 
 #ALLOWED_HOSTS =os.environ.get('ALLOWED_HOSTS').split(',')
 ALLOWED_HOSTS = ['*']
@@ -132,9 +126,12 @@ AUTH_PASSWORD_VALIDATORS = [
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
 }
 
 SIMPLE_JWT = {

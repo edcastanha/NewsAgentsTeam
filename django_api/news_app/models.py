@@ -20,3 +20,31 @@ class NewsModel(BaseModel):
         verbose_name = "Notícia"
         verbose_name_plural = "Notícias"
         ordering = ['-data_publicacao'] # Ordena as notícias pela data de publicação mais recente por padrão
+
+
+
+class CategoriaModel(BaseModel):
+    nome = models.CharField(max_length=255, verbose_name="Nome")
+    
+
+    def __str__(self):
+        return str(self.nome)
+    
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
+        ordering = ['nome']
+
+
+class SubCategoriaModel(BaseModel):
+    nome = models.CharField(max_length=255, verbose_name="Nome")
+    categoria = models.ForeignKey(CategoriaModel, on_delete=models.CASCADE, verbose_name="Categoria")
+    
+
+    def __str__(self):
+        return str(self.nome)
+    
+    class Meta:
+        verbose_name = "SubCategoria"
+        verbose_name_plural = "SubCategorias"
+        ordering = ['nome']

@@ -1,17 +1,4 @@
 services:
-  broker-server:
-    image: rabbitmq:3-management
-    container_name: broker-server
-    restart: always
-    environment:
-      - RABBITMQ_DEFAULT_USER=j_news
-      - RABBITMQ_DEFAULT_PASS=newsjota
-      - "5672:5672"
-      - "15672:15672"
-      - "25676:25676"
-    networks:
-      - server-hosts
-
 # Postgres - System Database 
   postgres-server:
     image: postgres:alpine3.18
@@ -34,13 +21,13 @@ services:
 # Django - System Admin / API REST 
   server-api:
     build:
-      context: ../src/
+      context: ../django_app/
       dockerfile: Dockerfile
     container_name: news-api
     #command: sh entrypoint.sh
     command: ['python', 'manage.py', 'runserver', '0.0.0.0:5005']
     volumes:
-      - ../src/:/api
+      - ../django_app/:/api
     depends_on:
       - postgres-server
       - broker-server
@@ -50,23 +37,6 @@ services:
     networks:
       - server-hosts
 
-  lambda-receiver:
-    build:
-      context: ../src/
-      dockerfile: Dockerfile
-    container_name: lambda-receiver
-    #command: sh entrypoint.sh
-    command: ['python', 'lambda_receiver.py']
-    volumes:
-      - ../src/:/api
-    depends_on:
-      - postgres-server
-      - broker-server
-    restart: always
-    ports:
-      - "8000:5005"
-    networks:
-      - server-hosts
 
 networks:
   server-hosts:
