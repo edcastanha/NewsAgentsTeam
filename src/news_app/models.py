@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField
 from utils.baseModel import BaseModel
 
 class NewsModel(BaseModel):
-    fonte = models.CharField(max_length=255, verbose_name="Fonte")
+    fonte = models.CharField(null=True, blank=True,max_length=255, verbose_name="Fonte")
     url = models.URLField(blank=True, null=True, verbose_name="URL")
     titulo = models.CharField(max_length=255, verbose_name="Título")
     conteudo = models.TextField(verbose_name="Conteúdo")

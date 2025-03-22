@@ -219,5 +219,13 @@ override.tf.json
 .idea/
 *.vscode/
 
+# Ignore Django
+*.pyc
+*.pyo
+*/static/
+*/media/
+*/staticfiles/
+**/migration/
+
 # Ignore directories for Terraform provider plugins (default behavior for providers)
 .terraform.d/

@@ -39,8 +39,29 @@ services:
     container_name: news-api
     #command: sh entrypoint.sh
     command: ['python', 'manage.py', 'runserver', '0.0.0.0:5005']
+    volumes:
+      - ../src/:/api
     depends_on:
       - postgres-server
+      - broker-server
+    restart: always
+    ports:
+      - "8000:5005"
+    networks:
+      - server-hosts
+
+  lambda-receiver:
+    build:
+      context: ../src/
+      dockerfile: Dockerfile
+    container_name: lambda-receiver
+    #command: sh entrypoint.sh
+    command: ['python', 'lambda_receiver.py']
+    volumes:
+      - ../src/:/api
+    depends_on:
+      - postgres-server
+      - broker-server
     restart: always
     ports:
       - "8000:5005"

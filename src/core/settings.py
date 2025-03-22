@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import timedelta # jwt token
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,11 +25,12 @@ RBMQ_PORT = os.environ.get('RBMQ_PORT', '5672')
 RBMQ_USER = os.environ.get('RBMQ_USER', 'guest')
 RBMQ_PASS = os.environ.get('RBMQ_PASS', 'guest')
 BROKER_URL = os.environ.get('BROKER_URL', 'amqp://guest:guest@localhost:5672')
-REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+#REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
 
 
 #ALLOWED_HOSTS =os.environ.get('ALLOWED_HOSTS').split(',')
 ALLOWED_HOSTS = ['*']
+
 # Application definition
 INSTALLED_APPS = [
     #Default
@@ -39,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Libs
-    'rest_framework.apps.RestFrameworkConfig',
+    'rest_framework',
+    'rest_framework_simplejwt',
     # Apps
-    'news.apps.NewsConfig',
+    'news_app.apps.NewsConfig',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -128,7 +131,18 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20
+    'PAGE_SIZE': 20,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
+    'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
+    'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
 }
 
 # Internationalization
