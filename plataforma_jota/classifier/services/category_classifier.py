@@ -42,7 +42,7 @@ class CategoryClassifier:
         ]
     }
     
-    # Dicionário de subcategorias e suas palavras-chave
+    # TODO - Dicionário de subcategorias e suas palavras-chave
     SUBCATEGORY_KEYWORDS = {
         'aposta da semana': [
             'aposta', 'semana', 'previsão', 'análise', 'expectativa'

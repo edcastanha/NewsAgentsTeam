@@ -75,8 +75,7 @@ class TagExtractor:
         tokens = word_tokenize(combined_text, language='portuguese')
         
         # Remover stopwords e palavras muito curtas
-        filtered_tokens = [token for token in tokens if 
-                          token not in self.stopwords and len(token) > 3]
+        filtered_tokens = [token for token in tokens if token not in self.stopwords and len(token) > 3]
         
         # Encontrar as palavras mais frequentes
         word_counter = Counter(filtered_tokens)
@@ -134,8 +133,7 @@ class TagExtractor:
         tokens = word_tokenize(text, language='portuguese')
         
         # Filtrar tokens
-        filtered_tokens = [token for token in tokens if 
-                          token not in self.stopwords and len(token) > 3]
+        filtered_tokens = [token for token in tokens if token not in self.stopwords and len(token) > 3]
         
         # Gerar n-gramas
         ngrams = []
