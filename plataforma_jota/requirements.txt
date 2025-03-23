@@ -19,7 +19,7 @@ scikit-learn==1.4.1.post1
 numpy==1.26.4
 
 # Observabilidade
-sentry-sdk==1.43.0
+sentry-sdk==2.8.0
 django-prometheus==2.3.1
 
 # Utilitários
