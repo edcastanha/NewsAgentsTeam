@@ -15,8 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
+from .views import GetTokenView
+
+from rest_framework.routers import DefaultRouter
+
+from news_app.views import NewsListAll, CategoryListAll
+
+router = DefaultRouter()
+router.register(r'api/news', NewsListAll, basename='news')
+router.register(r'api/category', CategoryListAll, basename='category')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', include('django_prometheus.urls')),
+    path('api/get-token/', GetTokenView.as_view(), name='get-token'),
+] + router.urls

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     
     # apps terceiros
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
     'corsheaders',
     'drf_yasg',
@@ -99,6 +100,7 @@ WSGI_APPLICATION = 'core_dj.wsgi.application'
 # Database
 DATABASES = {
     'default': dj_database_url.config(
+        
         default=env('DATABASE_URL'),
         conn_max_age=600,
     )
@@ -187,11 +189,13 @@ if not DEBUG:
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
 
-# Permissions Policy
-PERMISSIONS_POLICY = {
-    'autoplay': [],
-    'camera': [],
-    'geolocation': [],
-    'microphone': [],
-    'payment': [],
-}
+# Politica de permissoes
+#PERMISSIONS_POLICY = {
+#    'autoplay': [],
+#    'camera': [],
+#    'geolocation': [],
+#    'microphone': [],
+#    'payment': [],
+#}
+
+PROMETHEUS_LATENCY_BUCKETS = (0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0, 7.5, 10.0, 25.0, 50.0, 75.0, float("inf"),)

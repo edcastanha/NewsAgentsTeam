@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django_prometheus.models import ExportModelOperationsMixin
 
 
 class BaseModel(models.Model):
@@ -13,7 +14,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-class Category(BaseModel):
+class Category(ExportModelOperationsMixin('category'), BaseModel):
     """
     Representa uma categoria principal de notícias (vertical).
     Exemplos: Poder, Tributos, Saúde, Trabalhista.
@@ -31,7 +32,7 @@ class Category(BaseModel):
         return self.name
 
 
-class Subcategory(BaseModel):
+class Subcategory(ExportModelOperationsMixin('subcategory'),BaseModel):
     """
     Representa uma subcategoria de notícias.
     Exemplos: Aposta da Semana (dentro de Tributos), Matinal.
@@ -55,7 +56,7 @@ class Subcategory(BaseModel):
         return f"{self.category.name} - {self.name}"
 
 
-class Tag(BaseModel):
+class Tag(ExportModelOperationsMixin('tag'),BaseModel):
     """
     Representa uma tag ou palavra-chave usada para classificar notícias.
     Exemplos: Reforma Tributária, Imposto de Renda, Saúde Pública.
@@ -72,7 +73,7 @@ class Tag(BaseModel):
         return self.name
 
 
-class News(BaseModel):
+class News(ExportModelOperationsMixin('news'),BaseModel):
     """
     Representa uma notícia no sistema.
     """
