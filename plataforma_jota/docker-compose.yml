@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:alpine3.18
+    container_name: db
     environment:
       - POSTGRES_DB=jota_news
       - POSTGRES_USER=jota_user
@@ -19,6 +20,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -37,6 +39,7 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.api
+    container_name: api
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
@@ -47,11 +50,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-    environment:
-      - DEBUG=1
-      - DATABASE_URL=postgres://jota_user:jota_password@db:5432/jota_news
-      - RABBITMQ_URL=amqp://jota_user:jota_password@rabbitmq:5672/
-      - SECRET_KEY=development-secret-key-replace-in-production
+    env_file:
+      - .env.local
 
   receiver:
     build:
@@ -65,11 +65,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-    environment:
-      - DEBUG=1
-      - DATABASE_URL=postgres://jota_user:jota_password@db:5432/jota_news
-      - RABBITMQ_URL=amqp://jota_user:jota_password@rabbitmq:5672/
-      - SECRET_KEY=development-secret-key-replace-in-production
+    env_file:
+      - .env.local
 
   classifier:
     build:
@@ -83,12 +80,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
-    environment:
-      - DEBUG=1
-      - DATABASE_URL=postgres://jota_user:jota_password@db:5432/jota_news
-      - RABBITMQ_URL=amqp://jota_user:jota_password@rabbitmq:5672/
-      - SECRET_KEY=development-secret-key-replace-in-production
-
+    env_file:
+      - .env.local
 volumes:
   postgres_data:
   rabbitmq_data:
