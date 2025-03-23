@@ -10,7 +10,7 @@ Atores, artefatos, internos e externos, que interagem com a plataforma para proc
 
 Este diagrama representa o nível mais alto do modelo C4, fornecendo uma visão geral do sistema de processamento de notícias do Jota e suas interações com entidades externas.
 
-![C4 - Contexto do Sistema](./documents/img/C4-Context.png)
+![C4 - Contexto do Sistema](./docs/img/C4-Context.png)
 
 
 **Entidades:**
