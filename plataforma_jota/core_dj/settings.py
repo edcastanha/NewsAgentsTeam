@@ -177,9 +177,6 @@ if not DEBUG:
         'https://jota.info',
         'https://www.jota.info',
     ]
-
-# Security Settings (em prod)
-if not DEBUG:
     SECURE_HSTS_SECONDS = 3600  # 1 hora
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True

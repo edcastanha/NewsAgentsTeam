@@ -15,7 +15,7 @@ class CategoryClassifier:
     para determinar a categoria mais provável para uma notícia.
     """
     
-    # Dicionário de palavras-chave para cada categoria
+    # TODO - Dicionário de palavras-chave para cada categoria
     CATEGORY_KEYWORDS = {
         'poder': [
             'congresso', 'senado', 'câmara', 'deputados', 'stf', 'supremo', 
@@ -193,11 +193,10 @@ class CategoryClassifier:
             
         # Buscar objeto da subcategoria
         try:
-            subcategory = Subcategory.objects.get(
+            return Subcategory.objects.get(
                 slug=slugify(best_subcategory_name),
                 category=category
-            )
-            return subcategory
+                )
         except Subcategory.DoesNotExist:
             # Se não existir esta subcategoria para esta categoria, retornar None
             return None

@@ -11,8 +11,7 @@ def get_rabbitmq_connection():
     """
     try:
         params = pika.URLParameters(settings.RABBITMQ_URL)
-        connection = pika.BlockingConnection(params)
-        return connection
+        return pika.BlockingConnection(params)
     except Exception as e:
         logger.error(f"Erro ao conectar ao RabbitMQ: {str(e)}")
         raise
