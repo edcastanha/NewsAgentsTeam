@@ -31,8 +31,7 @@ class Category(ExportModelOperationsMixin('category'), BaseModel):
     def __str__(self):
         return self.name
 
-
-class Subcategory(ExportModelOperationsMixin('subcategory'),BaseModel):
+class Subcategory(ExportModelOperationsMixin('subcategory'), BaseModel):
     """
     Representa uma subcategoria de notícias.
     Exemplos: Aposta da Semana (dentro de Tributos), Matinal.
@@ -55,8 +54,7 @@ class Subcategory(ExportModelOperationsMixin('subcategory'),BaseModel):
     def __str__(self):
         return f"{self.category.name} - {self.name}"
 
-
-class Tag(ExportModelOperationsMixin('tag'),BaseModel):
+class Tag(ExportModelOperationsMixin('tag'), BaseModel):
     """
     Representa uma tag ou palavra-chave usada para classificar notícias.
     Exemplos: Reforma Tributária, Imposto de Renda, Saúde Pública.
@@ -73,16 +71,31 @@ class Tag(ExportModelOperationsMixin('tag'),BaseModel):
         return self.name
 
 
-class News(ExportModelOperationsMixin('news'),BaseModel):
+
+class Source(ExportModelOperationsMixin('source'), BaseModel):
+    """
+    Representa uma fonte de notícias.
+    Exemplos: G1, Folha de São Paulo, O Antagonista.
+    """
+    is_proccessed = models.BooleanField(_('Processado'), default=False)
+    raw_data = models.JSONField(_('Dados brutos'), null=True, blank=True)
+    classification_data = models.JSONField(_('Dados de classificação'), null=True, blank=True)
+    
+    class Meta:
+        verbose_name = _('Fonte')
+        verbose_name_plural = _('Fontes')
+        ordering = ['classification_data']
+
+    def __str__(self):
+        return self.name
+
+class News(ExportModelOperationsMixin('news'), BaseModel):
     """
     Representa uma notícia no sistema.
     """
     title = models.CharField(_('Título'), max_length=255)
     content = models.TextField(_('Conteúdo'))
-    source = models.CharField(_('Fonte'), max_length=255)
-    url = models.URLField(_('URL'), max_length=255, blank=True, null=True)
     published_at = models.DateTimeField(_('Publicado em'), default=timezone.now)
-    
     # Classificação
     category = models.ForeignKey(
         Category,
@@ -106,26 +119,29 @@ class News(ExportModelOperationsMixin('news'),BaseModel):
         verbose_name=_('Tags'),
         blank=True
     )
-    
     # Flags
     is_urgent = models.BooleanField(_('Urgente'), default=False)
-    is_processed = models.BooleanField(_('Processado'), default=False)
     is_classified = models.BooleanField(_('Classificado'), default=False)
-    
-    # Metadados
-    raw_data = models.JSONField(_('Dados brutos'), null=True, blank=True)
-    classification_data = models.JSONField(_('Dados de classificação'), null=True, blank=True)
+    source = models.ForeignKey(
+        Source,
+        on_delete=models.PROTECT,
+        related_name='news',
+        verbose_name=_('Fonte'),
+        null=False,
+        blank=False
+    )
+
 
     class Meta:
         verbose_name = _('Notícia')
         verbose_name_plural = _('Notícias')
-        ordering = ['-published_at']
+        ordering = ['-is_urgent','-published_at']
         indexes = [
             models.Index(fields=['published_at']),
             models.Index(fields=['is_urgent']),
-            models.Index(fields=['is_processed']),
             models.Index(fields=['is_classified']),
         ]
 
     def __str__(self):
         return self.title
+    

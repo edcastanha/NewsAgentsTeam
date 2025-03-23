@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 
 from queue.publisher import publish_message
-from news_app.models import News
+from news_app.models import Source
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
@@ -34,21 +34,18 @@ def webhook_receiver(request):
                     'message': f'Campo obrigatório ausente: {field}'
                 }, status=status.HTTP_400_BAD_REQUEST)
         
-        # Salvar notícia no banco com flag is_processed=False
-        news = News.objects.create(
-            title=data.get('title'),
-            content=data.get('content'),
+        # Salvar notícia no banco, inicialmente na tabela Source
+        receiver = Source.objects.create(
             source=data.get('source'),
             url=data.get('url', ''),
             published_at=data.get('published_at', None),
             raw_data=data,
-            is_processed=False,
             is_classified=False
         )
         
         # Publicar mensagem na fila para processamento
         message = {
-            'news_id': news.id,
+            'news_id': receiver.id,
             'action': 'process_news'
         }
         

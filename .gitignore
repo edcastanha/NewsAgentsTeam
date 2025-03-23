@@ -235,5 +235,8 @@ override.tf.json
 
 **/develop/
 
+**/django_cache/
+**/django_cache_root/
+
 # Ignore directories for Terraform provider plugins (default behavior for providers)
 .terraform.d/

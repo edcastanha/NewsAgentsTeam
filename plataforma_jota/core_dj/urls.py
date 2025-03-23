@@ -1,19 +1,3 @@
-"""
-URL configuration for core_dj project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 
@@ -21,15 +5,18 @@ from .views import GetTokenView
 
 from rest_framework.routers import DefaultRouter
 
-from news_app.views import NewsListAll, CategoryListAll
+from news_app.views import NewsViewSet, CategoryViewSet
 
 router = DefaultRouter()
-router.register(r'api/news', NewsListAll, basename='news')
-router.register(r'api/category', CategoryListAll, basename='category')
+# ------ NEWS ---------
+router.register(r'api/news', NewsViewSet, basename='news')
 
+# ------ CATEGORY ---------
+router.register(r'api/category', CategoryViewSet, basename='category')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('django_prometheus.urls')),
     path('api/get-token/', GetTokenView.as_view(), name='get-token'),
-] + router.urls
+    path('', include(router.urls)),
+    path('', include('django_prometheus.urls'))
+]

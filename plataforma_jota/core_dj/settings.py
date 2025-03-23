@@ -49,13 +49,13 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'drf_yasg',
-    'django_prometheus',
 
     #Apps locais
     'webhook',
     'news_app',
     'classifier',
     'queue',
+    'django_prometheus',
 ]
 
 MIDDLEWARE = [
@@ -201,7 +201,7 @@ PROMETHEUS_LATENCY_BUCKETS = (0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.
 
 CACHES = {
     'default': {
-        'BACKEND': 'django_prometheus.cache.backends.filebased.FileBasedCache',
-        'LOCATION': './django_cache/',
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'django_cache'),
     }
 }
