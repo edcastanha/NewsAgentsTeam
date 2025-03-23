@@ -38,7 +38,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: docker/Dockerfile.api
+      dockerfile: .docker/Dockerfile.api
     container_name: api
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -56,7 +56,7 @@ services:
   receiver:
     build:
       context: .
-      dockerfile: docker/Dockerfile.receiver
+      dockerfile: .docker/Dockerfile.receiver
     command: python scripts/consumer_receiver.py
     volumes:
       - .:/app
@@ -71,8 +71,9 @@ services:
   classifier:
     build:
       context: .
-      dockerfile: docker/Dockerfile.classifier
+      dockerfile: .docker/Dockerfile.classifier
     command: python scripts/consumer_classifier.py
+    restart: always
     volumes:
       - .:/app
     depends_on:
