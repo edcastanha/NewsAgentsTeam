@@ -70,7 +70,7 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile.classifier
-    command: python message_queue/consumers/classifier__source.py
+    command: python message_queue/consumers/classifier_source.py
     restart: always
     volumes:
       - .:/app

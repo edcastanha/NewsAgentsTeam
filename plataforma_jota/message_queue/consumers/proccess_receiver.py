@@ -6,11 +6,6 @@ from unidecode import unidecode
 from nltk.corpus import stopwords 
 from news_app.models import Source 
 from core_dj.settings import RABBITMQ_URL, RABBITMQ_QUEUE_NEWS_INCOMING, RABBITMQ_EXCHANGE, RABBITMQ_ROUTING_KEY_CLASSIFICATION # Importações das configurações [4]
-from django.core.wsgi import get_wsgi_application
-import os
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core_dj.settings')
-application = get_wsgi_application()
 
 # Carregar stop words
 nltk.download('stopwords')

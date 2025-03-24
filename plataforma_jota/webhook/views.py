@@ -16,7 +16,7 @@ class SourceReceiver(APIView):
 
     @csrf_exempt
     @permission_classes([AllowAny])
-    def post(self, request):  # Removed @api_view
+    def post(self, request):  
         """
         Endpoint para receber notícias via Webhook.
         Recebe dados em formato JSON e os envia para a fila de processamento.
@@ -24,6 +24,7 @@ class SourceReceiver(APIView):
         
         try:
             data_source = json.loads(request.body)
+            print(data_source)
             
             # Validação básica dos dados recebidos
             required_fields = ['titulo', 'conteudo'] # Alterado para titulo e conteudo
@@ -36,7 +37,7 @@ class SourceReceiver(APIView):
             
             # Publicar mensagem na fila para processamento
             publish_message(
-                message=request.body,
+                message=data_source,
                 exchange=settings.RABBITMQ_EXCHANGE,
                 routing_key=settings.RABBITMQ_ROUTING_KEY_INCOMING
             )

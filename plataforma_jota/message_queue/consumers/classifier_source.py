@@ -6,7 +6,7 @@ import time
 from django.conf import settings
 from news_app.models import News
 
-from classifier.services.category_classifier import CategoryClassifier
+from utils.category_classifier import CategoryClassifier
 
 logger = logging.getLogger(__name__)
 

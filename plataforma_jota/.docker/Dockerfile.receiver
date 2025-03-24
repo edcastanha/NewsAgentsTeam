@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ../ /app/
 
 # Comando para iniciar o consumidor de recebimento
-CMD ["python", "scripts/consumer_receiver.py"]
+CMD ["python", ".message_queue/consumers/proccess_receiver.py"]
