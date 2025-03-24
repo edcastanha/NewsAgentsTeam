@@ -4,7 +4,6 @@ import logging
 
 from message_queue.interface.connection import MessagingConnectionManager
 
-
 logger = logging.getLogger(__name__)
 
 class RabbitMQConnectionManager(MessagingConnectionManager):
@@ -13,6 +12,7 @@ class RabbitMQConnectionManager(MessagingConnectionManager):
     """
     def __init__(self):
         super().__init__()
+        self._connect()
 
     def get_connection(self):
         """Retorna a conexão com o RabbitMQ."""

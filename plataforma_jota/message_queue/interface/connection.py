@@ -1,23 +1,29 @@
-import logging
+import abc
 
-logger = logging.getLogger(__name__)
-
-class MessagingConnectionManager:
+class MessagingConnectionManager(abc.ABC):
     """
-    Classe base para gerenciar a conexão com sistemas de mensageria.
+    Interface abstrata para gerenciadores de conexão de mensageria.
     """
     def __init__(self):
         self._connection = None
         self._channel = None
 
+    @abc.abstractmethod
     def get_connection(self):
-        """Retorna a conexão com o sistema de mensageria."""
-        raise NotImplementedError("Este método deve ser implementado nas subclasses.")
+        """Retorna a conexão com o serviço de mensageria."""
+        pass
 
+    @abc.abstractmethod
     def get_channel(self):
-        """Retorna o canal de comunicação do sistema de mensageria."""
-        raise NotImplementedError("Este método deve ser implementado nas subclasses.")
+        """Retorna o canal de comunicação com o serviço de mensageria."""
+        pass
 
+    @abc.abstractmethod
+    def _connect(self):
+        """Estabelece a conexão com o serviço de mensageria."""
+        pass
+
+    @abc.abstractmethod
     def close_connection(self):
-        """Fecha a conexão com o sistema de mensageria, se necessário."""
-        raise NotImplementedError("Este método deve ser implementado nas subclasses.")
+        """Fecha a conexão com o serviço de mensageria."""
+        pass
