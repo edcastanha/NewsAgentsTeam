@@ -1,10 +1,10 @@
 # queue/consumers/proccess_receiver.py
 
 import json
-import pika # Exemplo de biblioteca para RabbitMQ (não está nas fontes)
-from unidecode import unidecode # Exemplo de biblioteca (não está nas fontes)
-from nltk.corpus import stopwords # Exemplo de biblioteca (não está nas fontes)
-from news_app.models import Source # Importação do model (baseado na estrutura [6])
+import pika 
+from unidecode import unidecode 
+from nltk.corpus import stopwords 
+from news_app.models import Source 
 from core_dj.settings import RABBITMQ_URL, RABBITMQ_QUEUE_NEWS_INCOMING, RABBITMQ_EXCHANGE, RABBITMQ_ROUTING_KEY_CLASSIFICATION # Importações das configurações [4]
 from django.core.wsgi import get_wsgi_application
 import os
@@ -12,43 +12,41 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core_dj.settings')
 application = get_wsgi_application()
 
-# Carregar stop words (exemplo - não está nas fontes)
-# nltk.download('stopwords')
-# stop_words_pt = set(stopwords.words('portuguese'))
+# Carregar stop words
+nltk.download('stopwords')
+stop_words_pt = set(stopwords.words('portuguese'))
 
 def normalize_text(text):
     if not text:
         return ""
-    # Remover acentuação (exemplo - não está nas fontes)
-    # text = unidecode(text)
-    # Converter para minúsculas (conhecimento geral de Python)
+    # Remover acentuação, Converter para minúsculas e Remover stop words
+    text = unidecode(text)
     text = text.lower()
-    # Remover stop words (exemplo - não está nas fontes)
-    # words = text.split()
-    # filtered_words = [word for word in words if word not in stop_words_pt]
-    # text = " ".join(filtered_words)
-    return text
+    words = text.split()
+    filtered_words = [word for word in words if word not in stop_words_pt]
+    return " ".join(filtered_words)
 
 def callback(ch, method, properties, body):
     try:
         news_data_raw = json.loads(body.decode())
-        title = news_data_raw.get('titulo') # Assumindo um campo 'titulo' (formato do webhook não especificado)
-        content = news_data_raw.get('conteudo') # Assumindo um campo 'conteudo' (formato do webhook não especificado)
+        title = news_data_raw.get('titulo') # Assumindo um campo 'titulo'
+        content = news_data_raw.get('conteudo') # Assumindo um campo 'conteudo'
 
-        # Salvar a notícia original
+
         source = Source.objects.create(raw_data=news_data_raw)
 
-        if title and content:
-            title_normalized = normalize_text(title)
-            content_normalized = normalize_text(content)
-
-            # Publicar mensagem para a fila de classificação (conterá o ID da Source)
-            publish_classification_task(source.id, title_normalized, content_normalized)
-            ch.basic_ack(delivery_tag=method.delivery_tag)
-        else:
+        if not title or not content:
             print(f"Título ou conteúdo ausente na mensagem: {news_data_raw}")
             ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False) # Não reenviar se faltar dados essenciais
+            raise ValueError("Título ou conteúdo ausente")
 
+        title_normalized = normalize_text(title)
+        content_normalized = normalize_text(content)
+
+        # Publicar mensagem para a fila de classificação (conterá o ID da Source)
+        publish_classification_task(source.id, title_normalized, content_normalized)
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+        
     except json.JSONDecodeError:
         print(f"Erro ao decodificar JSON: {body}")
         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)

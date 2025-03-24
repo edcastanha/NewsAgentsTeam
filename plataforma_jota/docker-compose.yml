@@ -55,7 +55,7 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile.receiver
-    command: python queue/consumers/proccess_receiver.py
+    command: python message_queue/consumers/proccess_receiver.py
     volumes:
       - .:/app
     depends_on:
@@ -70,7 +70,7 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile.classifier
-    command: python queue/consumers/classifier__source.py
+    command: python message_queue/consumers/classifier__source.py
     restart: always
     volumes:
       - .:/app
