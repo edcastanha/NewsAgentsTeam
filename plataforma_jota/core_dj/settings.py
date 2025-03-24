@@ -219,11 +219,12 @@ CACHES = {
 
 RABBITMQ_URL=env('RABBITMQ_URL', default='amqp://jota_user:jota_password@rabbitmq:5672/')
 EXCHANGE_NEWS=env('EXCHANGE_NEWS',default='jota_news_exchange')
-QUEUE_NEWS_INCOMING=env('QUEUE_NEWS_INCOMING',default='source_receiver')
+
+QUEUE_NEWS_INCOMING=env('QUEUE_NEWS_INCOMING',default='source_incoming')
 QUEUE_NEWS_CLASSIFICATION=env('QUEUE_NEWS_CLASSIFICATION',default='source_classification')
-QUEUE_NEWS_URGENCY=env('QUEUE_NEWS_URGENCY',default='new_notification')
+QUEUE_NEWS_URGENCY=env('QUEUE_NEWS_URGENCY',default='urgent_notification')
 
 ROUTING_KEY_INCOMING=env('ROUTING_KEY_INCOMING', default='source.incoming')
-ROUTING_KEY_CLASSIFICATION=env('ROUTING_KEY_CLASSIFICATION',default='new.classification')
-ROUTING_KEY_NOTIFICATION=env('ROUTING_KEY_NOTIFICATION',default='news.notification')
+ROUTING_KEY_CLASSIFICATION=env('ROUTING_KEY_CLASSIFICATION',default='source.classification')
+ROUTING_KEY_NOTIFICATION=env('ROUTING_KEY_NOTIFICATION',default='urgent.notification')
 

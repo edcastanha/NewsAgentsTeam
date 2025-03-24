@@ -21,7 +21,8 @@
             "tags": [],
             "metadata": {
                 "description": "Default virtual host",
-                "tags": []
+                "tags": [],
+                "default_queue_type": "undefined"
             }
         }
     ],
@@ -45,7 +46,7 @@
     "policies": [],
     "queues": [
         {
-            "name": "source_reicever",
+            "name": "urgent_notification",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -54,7 +55,7 @@
             }
         },
         {
-            "name": "new_notification",
+            "name": "source_incoming",
             "vhost": "/",
             "durable": true,
             "auto_delete": false,
@@ -87,25 +88,25 @@
         {
             "source": "jota_news_exchange",
             "vhost": "/",
-            "destination": "new_notification",
-            "destination_type": "queue",
-            "routing_key": "news.notification",
-            "arguments": {}
-        },
-        {
-            "source": "jota_news_exchange",
-            "vhost": "/",
             "destination": "source_classification",
             "destination_type": "queue",
-            "routing_key": "news.classification",
+            "routing_key": "source.classification",
             "arguments": {}
         },
         {
             "source": "jota_news_exchange",
             "vhost": "/",
-            "destination": "source_reicever",
+            "destination": "source_incoming",
             "destination_type": "queue",
             "routing_key": "source.incoming",
+            "arguments": {}
+        },
+        {
+            "source": "jota_news_exchange",
+            "vhost": "/",
+            "destination": "urgent_notification",
+            "destination_type": "queue",
+            "routing_key": "urgent.notification",
             "arguments": {}
         }
     ]

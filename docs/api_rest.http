@@ -14,7 +14,7 @@ Data:
    "password":"admin"
 }
 
-###
+### TEST CURL - Falha Autenticador
 curl -X POST -H "Content-Type: application/json" 
 -d '{"username": "edson.filho", "password": "mudar1234"}' {{url}}api/get-token/
 
@@ -41,7 +41,7 @@ Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb
       {
          "fonte":"Plantão Urgente Brasil",
          "url":null,
-         "titulo":"URGENTE: Cientistas descobrem cura revolucionária para o câncer, mas governo esconde da população!",
+         "titulo":"News  1",
          "conteudo":"Fontes internas revelam que uma equipe de pesquisadores brasileiros desenvolveu um tratamento inovador que elimina completamente as células cancerígenas em testes preliminares. No entanto, o governo federal estaria suprimindo a divulgação da descoberta por motivos ainda desconhecidos, gerando indignação entre a comunidade científica e pacientes.",
          "data_publicacao":"2025-03-26T14:15:00Z",
          "autor":"Redação Plantão Urgente",
@@ -61,7 +61,7 @@ Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb
       {
          "fonte":"Blog Verdade Revelada",
          "url":"https://blogverdade.example.com/post_nao_existe",
-         "titulo":"ATENÇÃO: Vídeo chocante mostra extraterrestres caminhando em cidade brasileira!",
+         "titulo":"News 2",
          "conteudo":"Um vídeo que circula nas redes sociais mostra o que parecem ser seres de outro planeta andando pelas ruas de uma cidade no interior do Brasil. As imagens, de qualidade duvidosa, têm gerado grande debate e teorias conspiratórias sobre a presença alienígena em nosso país. Especialistas divergem sobre a autenticidade do vídeo.",
          "data_publicacao":"2025-03-25T19:00:00Z",
          "autor":"Investigador Anônimo",
@@ -81,7 +81,7 @@ Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb
       {
          "fonte":"Twitter de um usuário anônimo (@NoticiasBombasticas)",
          "url":null,
-         "titulo":"BOMBA: Celebridade famosa anuncia falência e culpa esquema secreto de pirâmide financeira!",
+         "titulo":"News 3",
          "conteudo":"Segundo fontes próximas, o famoso ator [Nome de Celebridade] teria perdido toda a sua fortuna após investir em um esquema de pirâmide financeira que envolveria figuras importantes do cenário político e empresarial. O anúncio oficial da falência é esperado para as próximas horas, e detalhes chocantes devem vir à tona.",
          "data_publicacao":"2025-03-27T08:45:00Z",
          "autor":null,
