@@ -1,7 +1,24 @@
 @url = http://localhost:8000/
 
+
+
 GET  {{url}} HTTP/1.1
 Content-Type: application/json
+
+
+###
+POST {{url}}api/get-token/ HTTP/1.1
+Content-Type: application/json
+
+{
+   "username":"admin",
+   "password":"admin"
+}
+###
+
+curl -X POST -H "Content-Type: application/json" 
+-d '{"username": "edson.filho", "password": "mudar1234"}' {{url}}api/get-token/
+
 
 ###
 
@@ -9,20 +26,17 @@ POST {{url}}api/news/ HTTP/1.1
 content-type: application/json
 
 {
-    "username": "edson.",
-    "password": "mudar1234"
+    "token": "2d5816250d80efbb0de0fc3e3e5ce6b5def55835"
 }
 
-###
-
-curl -X POST -H "Content-Type: application/json" 
--d '{"username": "edson.filho", "password": "mudar1234"}' {{url}}api/get-token/
 
 ###
-POST {{url}}api/get-token/ HTTP/1.1
-Content-Type: application/json
+
+GET {{url}}api/news/ HTTP/1.1
+content-type: application/json
 
 {
-    "username": "edson.filho",
-    "password": "mudar1234"
+    "token": "2d5816250d80efbb0de0fc3e3e5ce6b5def55835"
 }
+
+###

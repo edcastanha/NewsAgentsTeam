@@ -3,7 +3,7 @@ import logging
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.views import APIView
@@ -15,9 +15,8 @@ logger = logging.getLogger(__name__)
 class SourceReceiver(APIView):
 
     @csrf_exempt
-    @api_view(['POST'])
     @permission_classes([AllowAny])
-    def post(self, request):
+    def post(self, request):  # Removed @api_view
         """
         Endpoint para receber notícias via Webhook.
         Recebe dados em formato JSON e os envia para a fila de processamento.
@@ -27,7 +26,7 @@ class SourceReceiver(APIView):
             data_source = json.loads(request.body)
             
             # Validação básica dos dados recebidos
-            required_fields = ['title', 'content']
+            required_fields = ['titulo', 'conteudo'] # Alterado para titulo e conteudo
             for field in required_fields:
                 if field not in data_source:
                     return JsonResponse({

@@ -143,11 +143,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # RabbitMQ Configuration
 RABBITMQ_URL = env('RABBITMQ_URL')
-RABBITMQ_QUEUE_NEWS_INCOMING = 'jota_news_incoming'
-RABBITMQ_QUEUE_NEWS_CLASSIFICATION = 'jota_news_classification'
 RABBITMQ_EXCHANGE = 'jota_news_exchange'
-RABBITMQ_ROUTING_KEY_INCOMING = 'news.incoming'
-RABBITMQ_ROUTING_KEY_CLASSIFICATION = 'news.classification'
+
+RABBITMQ_QUEUE_NEWS_INCOMING = 'source_reicever'
+RABBITMQ_QUEUE_NEWS_CLASSIFICATION = 'source_classification'
+RABBITMQ_QUEUE_NEWS_URGENCY = 'new_notification'
+
+RABBITMQ_ROUTING_KEY_INCOMING = 'source.incoming'
+RABBITMQ_ROUTING_KEY_CLASSIFICATION = 'source.preproccess'
+RABBITMQ_ROUTING_KEY_NOTIFICATION = 'new.classification'
+
 
 # Rest Framework
 REST_FRAMEWORK = {
