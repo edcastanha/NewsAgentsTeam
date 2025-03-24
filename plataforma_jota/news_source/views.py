@@ -4,10 +4,11 @@ import logging
 from django.conf import settings
 from django.http import JsonResponse
 from rest_framework.decorators import permission_classes, authentication_classes
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
+from django.utils.translation import gettext as _  # Importe gettext
 
 from message_queue.interface.rabbitmq.manager import RabbitMQConnectionManager
 from message_queue.news_publishers import BreakingNewsPublisher
@@ -34,8 +35,9 @@ class SourceReceiver(APIView):
                 logging.error(f"Dados inválidos recebidos via webhook: {request.data}")
                 return JsonResponse({
                     'status': 'error',
-                    'message': 'Formato de dados inválido: esperado uma lista de notícias sob a chave "noticias"'
-                }, status=status.HTTP_400_BAD_REQUEST)
+                    'message': _('Formato de dados inválido: esperado uma lista de notícias sob a chave "noticias"')
+                }, status=status.HTTP_400_BAD_REQUEST, json_dumps_params={'ensure_ascii': False})
+
             # Cria o gerenciador de conexão com o RabbitMQ
             connection_manager = RabbitMQConnectionManager()
 
@@ -47,13 +49,13 @@ class SourceReceiver(APIView):
                     if field not in noticia:
                         return JsonResponse({
                             'status': 'error',
-                            'message': f'Campo obrigatório ausente na notícia: {field}'
-                        }, status=status.HTTP_400_BAD_REQUEST)
+                            'message': _(f'Campo obrigatório ausente na notícia: {field}')
+                        }, status=status.HTTP_400_BAD_REQUEST, json_dumps_params={'ensure_ascii': False})
 
                     #TODO: Validar quantidade minima de caracter para conteudo e se Titulo nao é null (???)
 
                 # Publicar mensagem na fila para processamento (adaptado para a estrutura da notícia)
-                publisher._publish_rabbitmq_message(
+                publisher.publish_message(
                     message=noticia,
                     exchange=settings.EXCHANGE_NEWS,
                     routing_key=settings.ROUTING_KEY_INCOMING
@@ -62,12 +64,12 @@ class SourceReceiver(APIView):
 
             return JsonResponse({
                 'status': 'success',
-                'message': 'Notícias recebidas e enviadas para processamento com sucesso',
-            }, status=status.HTTP_201_CREATED)
+                'message': _('Notícias recebidas e enviadas para processamento com sucesso'),
+            }, status=status.HTTP_201_CREATED, json_dumps_params={'ensure_ascii': False})
 
         except Exception as e:
             logger.exception(f"Erro ao processar webhook: {str(e)}")
             return JsonResponse({
                 'status': 'error',
-                'message': f'Erro ao processar webhook: {str(e)}'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                'message': _(f'Erro ao processar webhook: {str(e)}')  # Traduzido
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR, json_dumps_params={'ensure_ascii': False})

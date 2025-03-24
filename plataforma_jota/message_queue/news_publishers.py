@@ -2,7 +2,6 @@ import json
 import logging
 import pika
 from message_queue.interface.rabbitmq.manager import RabbitMQConnectionManager
-from message_queue.interface.connection import MessagingConnectionManager
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +10,7 @@ class BreakingNewsPublisher:
     Responsável por publicar mensagens no RabbitMQ.
     Utiliza o MessagingConnectionManager para obter a conexão e o canal.
     """
-    def __init__(self, connection_manager: MessagingConnectionManager):
+    def __init__(self, connection_manager: RabbitMQConnectionManager):  # Especifica RabbitMQConnectionManager
         if not isinstance(connection_manager, RabbitMQConnectionManager):
             raise TypeError("connection_manager deve ser uma instância de RabbitMQConnectionManager")
         self.connection_manager = connection_manager
@@ -43,7 +42,7 @@ class BreakingNewsPublisher:
             channel.basic_publish(
                 exchange=exchange,
                 routing_key=routing_key,
-                body=json.dumps(message),
+                body=json.dumps(message, ensure_ascii=False), 
                 properties=pika.BasicProperties(
                     delivery_mode=2,  # Mensagem persistente
                     content_type='application/json'
