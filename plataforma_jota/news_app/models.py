@@ -70,21 +70,20 @@ class Tag(ExportModelOperationsMixin('tag'), BaseModel):
     def __str__(self):
         return self.name
 
-
-
 class Source(ExportModelOperationsMixin('source'), BaseModel):
     """
-    Representa uma fonte de notícias.
-    Exemplos: G1, Folha de São Paulo, O Antagonista.
+    Representa uma fonte de notícias original e os dados pré-processados (Normalizado).
     """
+    raw_data = models.JSONField(_('Dados brutos'), null=False, blank=False)
+    clean_data = models.JSONField(_('Dados limpos'), null=True, blank=True)
+    proccessed_data = models.JSONField(_('Data de Processamento'), null=True, blank=True)
     is_proccessed = models.BooleanField(_('Processado'), default=False)
-    raw_data = models.JSONField(_('Dados brutos'), null=True, blank=True)
-    classification_data = models.JSONField(_('Dados de classificação'), null=True, blank=True)
+    name_source = models.CharField(_('Nome da Fonte'), max_length=255,  null=False, blank=False)
     
     class Meta:
         verbose_name = _('Fonte')
         verbose_name_plural = _('Fontes')
-        ordering = ['classification_data']
+        ordering = ['proccessed_data']
 
     def __str__(self):
         return self.name

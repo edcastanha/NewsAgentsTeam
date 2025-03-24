@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from rest_framework.permissions import AllowAny 
+
 class GetTokenView(APIView):
     '''
     Views de autenticação para obter token de acesso

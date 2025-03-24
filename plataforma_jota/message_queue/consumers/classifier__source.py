@@ -2,25 +2,17 @@ import json
 import logging
 import pika
 import time
-import django
-import os
-
-# Configurar Django para execução como script
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core_dj.settings')
-django.setup()
 
 from django.conf import settings
 from news_app.models import News
+
 from classifier.services.category_classifier import CategoryClassifier
-from classifier.services.tag_extractor import TagExtractor
-from classifier.services.urgency_detector import UrgencyDetector
 
 logger = logging.getLogger(__name__)
 
 # Instanciar classificadores
 category_classifier = CategoryClassifier()
-tag_extractor = TagExtractor()
-urgency_detector = UrgencyDetector()
+
 
 def callback(ch, method, properties, body):
     """
@@ -57,16 +49,10 @@ def callback(ch, method, properties, body):
                 news.title, news.content
             )
             
-            # Extrair tags
-            tags = tag_extractor.extract_tags(news.title, news.content)
-            
-            # Detectar urgência
-            is_urgent = urgency_detector.detect_urgency(news.title, news.content)
             
             # Atualizar notícia
             news.category = category
             news.subcategory = subcategory
-            news.is_urgent = is_urgent
             news.is_classified = True
             
             # Armazenar dados de classificação

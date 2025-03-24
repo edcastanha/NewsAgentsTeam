@@ -81,3 +81,20 @@ jota_news_processor/
 └── scripts/                         # Scripts utilitários
     ├── consumer_receiver.py         # Script para executar o consumidor receiver
     └── consumer_classifier.py       # Script para executar o consumidor classifier
+
+
+ '''
+{ 
+ "fonte": "Nome da fonte da notícia (ex: Agência Brasil, Twitter)", 
+ "url": "URL da notícia original (opcional)", 
+ "titulo": "Título da notícia", 
+ "conteudo": "Corpo completo da notícia", 
+ "data_publicacao": "Data e hora da publicação da notícia no formato ISO 8601 (ex: '2025-03-19T10:30:00Z')", 
+ "autor": "Autor da notícia (opcional)", 
+ "categoria_original": "Categoria fornecida pela fonte original (opcional)", 
+ "tags": ["lista", "de", "palavras-chave", "relacionadas"], 
+ "informacoes_adicionais": { 
+   "campo_extra_1": "valor", 
+   "campo_extra_2": "outro valor" 
+ } 
+ '''
