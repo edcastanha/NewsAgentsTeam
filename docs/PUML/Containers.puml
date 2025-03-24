@@ -1,0 +1,34 @@
+@startuml Basic Sample
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(admin, "Administrator", $sprite="person1", $link="../api_rest.http")
+System_Boundary(c1, "Sample System", $link="https://github.com/plantuml-stdlib/C4-PlantUML") {
+    Container(web_app, "Web Application", "C#, ASP.NET Core 2.1 MVC", $descr="Allows users to compare multiple Twitter timelines", $link="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md")
+}
+
+
+AddElementTag("v1.0", $borderColor="#0000ff")
+AddElementTag("v1.1", $fontColor="#d73027")
+AddElementTag("backup", $fontColor="red")
+
+AddRelTag("backup", $textColor="orange", $lineColor="orange", $lineStyle = DashedLine())
+
+Person(user, "Source News", $sprite="person2", "Notícias de diversas fontes, incluindo agências internacionais, redes sociais e envios de usuários")
+Container(queueNews, "Receiver", "redis", "Valida o JSON e Encaminha para processamento", $tags="v1.0")
+
+Person(admin, "Administrator", "People that administrates the products via the new v1.1 components", $tags="v1.1")
+Container(sources, "POST API", "FastAPI", "endpoint que receba webhooks contendo as notícias em formato JSON.", $tags="v1.0")
+System(spaAdmin, "Admin SPA", "python/Django", "The administrator interface that the customer interacts with via new v1.1", $tags="v1.1")
+Container(api, "API", "Python", "", $tags="v1.0+v1.1")
+ContainerDb(db, "Database", "Microsoft SQL", "Holds product, order and invoice information")
+Container(archive, "Archive", "Audit logging", "Stores 5 years", $tags="backup")
+
+Rel(user, sources, "News", "https")
+Rel(sources, queueNews, "Queue", "https")
+Rel_R(api, db, "Reads/Writes")
+Rel(admin, spaAdmin, "Uses", "https")
+Rel(spaAdmin, api, "Uses", "https")
+Rel_L(api, archive, "Writes", "messages", $tags="backup")
+
+SHOW_LEGEND()
+@enduml
