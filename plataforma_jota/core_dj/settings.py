@@ -4,6 +4,8 @@ import dj_database_url
 import environ
 import logging
 
+logger = logging.getLogger(__name__)
+
 
 def configure_production_security():
     SECURE_HSTS_SECONDS = 3600  # 1 hora
@@ -20,6 +22,7 @@ def configure_production_security():
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Inicializa environ
 env = environ.Env(
     MYSECRET=(str, '78cdsvc7sdavb07nvar87ynbdravs7by87yvb7ab09se7vybrsd7vyd9'),
@@ -28,13 +31,13 @@ env = environ.Env(
     RABBITMQ_URL=(str, 'amqp://guest:guest@localhost:5672/'),
     EXCHANGE_NEWS=(str, 'jota_news_exchange'),
 
-    QUEUE_NEWS_INCOMING=(str, 'source_receiver'),
+    QUEUE_NEWS_INCOMING=(str, 'source_incoming'),
     QUEUE_NEWS_CLASSIFICATION=(str, 'source_classification'),
     QUEUE_NEWS_URGENCY=(str, 'new_notification'),
     
     ROUTING_KEY_INCOMING=(str, 'source.incoming'),
-    ROUTING_KEY_CLASSIFICATION=(str, 'source.preprocess'),
-    ROUTING_KEY_NOTIFICATION=(str, 'new.classification')
+    ROUTING_KEY_CLASSIFICATION=(str, 'source.classification'),
+    ROUTING_KEY_NOTIFICATION=(str, 'urgent.notification')
 )
 # Lê variáveis do arquivo .env
 environ.Env.read_env(os.path.join(BASE_DIR, '.env.local'))
@@ -83,7 +86,8 @@ INSTALLED_APPS = [
 
     # Apps locais
     'news_app',
-    
+    'message_queue',
+
     # Metricas
     'django_prometheus',
 ]

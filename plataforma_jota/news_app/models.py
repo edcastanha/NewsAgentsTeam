@@ -86,7 +86,7 @@ class Source(ExportModelOperationsMixin('source'), BaseModel):
         ordering = ['processed_data']
 
     def __str__(self):
-        return self.name
+        return self.raw_data
 
 class News(ExportModelOperationsMixin('news'), BaseModel):
     """

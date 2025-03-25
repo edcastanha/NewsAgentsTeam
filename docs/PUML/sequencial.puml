@@ -1,0 +1,22 @@
+@startuml
+!include <c4/C4_Container>
+
+title Diagrama de Container - Plataforma Jota News
+
+System_Boundary(c1, "Plataforma Jota News") {
+    Container(api, "API", "Python, Django", "Recebe notícias via webhook e publica na fila", "HTTPS")
+    ContainerDb(db, "Banco de Dados", "PostgreSQL", "Armazena notícias e metadados", "JDBC")
+    Container(proccess, "Processador de Notícias", "Python", "Consome notícias, normaliza e publica para classificação", "AMQP")
+    Container(classifier, "Classificador de Notícias", "Python", "Consome notícias e realiza a classificação", "AMQP")
+}
+
+Container_Ext(rabbitmq, "RabbitMQ", "RabbitMQ", "Broker de Mensagens", "AMQP")
+
+Rel(api, rabbitmq, "Publica", "AMQP")
+Rel(proccess, rabbitmq, "Consome/Publica", "AMQP")
+Rel(classifier, rabbitmq, "Consome", "AMQP")
+Rel(api, db, "Armazena", "JDBC")
+Rel(proccess, db, "Armazena", "JDBC")
+Rel(classifier, db, "Armazena", "JDBC")
+
+@enduml

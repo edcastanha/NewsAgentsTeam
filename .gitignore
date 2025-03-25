@@ -227,5 +227,8 @@ override.tf.json
 **/ENV/
 **/env.bak/
 
+*__pycache__
+**__pycache__
+
 # Ignore directories for Terraform provider plugins (default behavior for providers)
 .terraform.d/

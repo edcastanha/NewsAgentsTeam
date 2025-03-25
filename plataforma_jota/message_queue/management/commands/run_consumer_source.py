@@ -1,19 +1,21 @@
 import logging
 from django.conf import settings
-from interface.rabbitmq.manager import RabbitMQConnectionManager
+from django.core.management.base import BaseCommand #Importação correta
+from message_queue.interface.rabbitmq.manager import RabbitMQConnectionManager
 from message_queue.interface.aws.manager import SQSSNSConnectionManager
 from message_queue.consumers.rabbitmq_consumer import RabbitMQConsumer
 from message_queue.consumers.sqs_consumer import SQSConsumer
 from message_queue.interface.consumer import MessageProcessor
 from message_queue.consumers.helpers.process_receiver import NewsProcessor
-
+from message_queue.news_publishers import BreakingNewsPublisher
 logger = logging.getLogger(__name__)
 
 class SourceConsumer:
     def __init__(self, provider="rabbitmq"):
         self.provider = provider
         self.connection_manager = self._get_connection_manager()
-        self.news_processor = NewsProcessor()
+        self.publisher = BreakingNewsPublisher(self.connection_manager) # Cria o publisher
+        self.news_processor = NewsProcessor(self.publisher) # Passa o publisher para o NewsProcessor
         self.consumer = self._get_consumer()
 
     def _get_connection_manager(self):
@@ -39,9 +41,13 @@ class SourceConsumer:
     def start_consuming(self):
         self.consumer.consume_messages()
 
-if __name__ == '__main__':
-    # Escolha o provedor de mensagens (RabbitMQ ou SQS)
-    provider = "rabbitmq"  # Ou "sqs"
+class Command(BaseCommand): #Classe Command no nivel superior
+    help = 'Starts the source consumer'
 
-    source_consumer = SourceConsumer(provider)
-    source_consumer.start_consuming()
+    def add_arguments(self, parser):
+        parser.add_argument('provider', type=str, nargs='?', default='rabbitmq', help='Message provider (rabbitmq or sqs)')
+
+    def handle(self, *args, **options):
+        provider = options['provider']
+        source_consumer = SourceConsumer(provider)
+        source_consumer.start_consuming()

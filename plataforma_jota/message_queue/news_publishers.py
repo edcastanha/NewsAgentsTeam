@@ -1,4 +1,5 @@
-consumer_source.pyimport json
+#message_queue/news_publishers
+import json
 import logging
 import pika
 from message_queue.interface.rabbitmq.manager import RabbitMQConnectionManager
