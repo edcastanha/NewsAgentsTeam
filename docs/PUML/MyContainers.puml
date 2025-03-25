@@ -1,34 +1,36 @@
 @startuml Basic Sample
+@startuml Sistema de Processamento de Notícias Jota
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-Person(admin, "Administrator", $sprite="person1", $link="../api_rest.http")
-System_Boundary(c1, "Sample System", $link="https://github.com/plantuml-stdlib/C4-PlantUML") {
-    Container(web_app, "Web Application", "C#, ASP.NET Core 2.1 MVC", $descr="Allows users to compare multiple Twitter timelines", $link="https://github.com/plantuml-stdlib/C4-PlantUML/blob/master/LayoutOptions.md")
+Person(fonte_noticias, "Source News", "Notícias de diversas fontes (agências, redes sociais, usuários)")
+
+System_Boundary(sistema, "Sistema de Processamento de Notícias Jota") {
+
+  Container(webhook_api, "POST API", "FastAPI", "Endpoint que recebe webhooks contendo as notícias em formato JSON.", $tags="v1.0")
+  Container(fila_mensagens, "Receiver", "RabbitMQ", "Recebe as notícias, valida o JSON e enfileira para processamento.", $tags="v1.0")
+  Container(classificador, "Classifier", "Python", "Classifica as notícias por categoria e extrai palavras-chave (tags).", $tags="v1.0")
+  ContainerDb(banco_dados, "Database", "PostgreSQL", "Armazena as notícias classificadas (título, conteúdo, fonte, data, categoria, urgência, tags).")
+  Container(api_rest, "API", "Python/Django REST", "Disponibiliza as notícias classificadas para a equipe editorial (filtragem, marcação de urgência).", $tags="v1.0+v1.1")
+  Container(admin_spa, "Admin SPA", "Python/Django", "Interface para a equipe editorial acessar e gerenciar as notícias.", $tags="v1.1")
+  Container(notificacoes, "Notificações WhatsApp", "Python", "Envia notificações via WhatsApp para notícias urgentes (implementação futura).")
+  Container(observabilidade, "Observabilidade", "...", "Monitora o desempenho e identifica gargalos (ex: logs, métricas).")
+  Container(seguranca, "Segurança", "...", "Implementa as melhores práticas de segurança.")
 }
 
+Person(equipe_editorial, "Editorial Team", "Equipe responsável por acessar e gerenciar as notícias.")
 
-AddElementTag("v1.0", $borderColor="#0000ff")
-AddElementTag("v1.1", $fontColor="#d73027")
-AddElementTag("backup", $fontColor="red")
-
-AddRelTag("backup", $textColor="orange", $lineColor="orange", $lineStyle = DashedLine())
-
-Person(user, "Source News", $sprite="person2", "Notícias de diversas fontes, incluindo agências internacionais, redes sociais e envios de usuários")
-Container(queueNews, "Receiver", "redis", "Valida o JSON e Encaminha para processamento", $tags="v1.0")
-
-Person(admin, "Administrator", "People that administrates the products via the new v1.1 components", $tags="v1.1")
-Container(sources, "POST API", "FastAPI", "endpoint que receba webhooks contendo as notícias em formato JSON.", $tags="v1.0")
-System(spaAdmin, "Admin SPA", "python/Django", "The administrator interface that the customer interacts with via new v1.1", $tags="v1.1")
-Container(api, "API", "Python", "", $tags="v1.0+v1.1")
-ContainerDb(db, "Database", "Microsoft SQL", "Holds product, order and invoice information")
-Container(archive, "Archive", "Audit logging", "Stores 5 years", $tags="backup")
-
-Rel(user, sources, "News", "https")
-Rel(sources, queueNews, "Queue", "https")
-Rel_R(api, db, "Reads/Writes")
-Rel(admin, spaAdmin, "Uses", "https")
-Rel(spaAdmin, api, "Uses", "https")
-Rel_L(api, archive, "Writes", "messages", $tags="backup")
+Rel(fonte_noticias, webhook_api, "Envia notícias via", "HTTPS")
+Rel(webhook_api, fila_mensagens, "Envia para fila", "HTTPS")
+Rel(fila_mensagens, classificador, "Consome notícias da fila")
+Rel(classificador, banco_dados, "Armazena notícias classificadas")
+Rel_R(api_rest, banco_dados, "Lê e escreve dados")
+Rel(equipe_editorial, admin_spa, "Utiliza via", "HTTPS")
+Rel(admin_spa, api_rest, "Consome API via", "HTTPS")
+Rel(api_rest, notificacoes, "Envia notificações para")
+Rel(sistema, observabilidade, "Monitora")
+Rel(sistema, seguranca, "Aplica")
 
 SHOW_LEGEND()
 @enduml

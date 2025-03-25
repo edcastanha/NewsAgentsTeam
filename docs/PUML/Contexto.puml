@@ -43,4 +43,8 @@ Rel( notification, c1,  "Consome API externa", "API/HTTPS")
 
 Rel(admin, api, "Acessa", "Web/HTTPS")
 
+
+SHOW_LEGEND()
+
+
 @enduml
