@@ -76,17 +76,17 @@ class Source(ExportModelOperationsMixin('source'), BaseModel):
     """
     raw_data = models.JSONField(_('Dados brutos'), null=False, blank=False)
     clean_data = models.JSONField(_('Dados limpos'), null=True, blank=True)
-    proccessed_data = models.JSONField(_('Data de Processamento'), null=True, blank=True)
-    is_proccessed = models.BooleanField(_('Processado'), default=False)
+    processed_data = models.JSONField(_('Data de Processamento'), null=True, blank=True)
+    is_processed = models.BooleanField(_('Processado'), default=False)
     name_source = models.CharField(_('Nome da Fonte'), max_length=255,  null=False, blank=False)
     
     class Meta:
         verbose_name = _('Fonte')
         verbose_name_plural = _('Fontes')
-        ordering = ['proccessed_data']
+        ordering = ['processed_data']
 
     def __str__(self):
-        return self.name
+        return self.raw_data
 
 class News(ExportModelOperationsMixin('news'), BaseModel):
     """

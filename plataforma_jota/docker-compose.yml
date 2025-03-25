@@ -51,11 +51,13 @@ services:
     env_file:
       - .env.local
 
-  proccess:
+  consumer_process:
+    container_name: consumer_process
     build:
       context: .
       dockerfile: .docker/Dockerfile.receiver
-    command: python message_queue/consumers/proccess_receiver.py
+    #command: python message_queue/consumer_source.py
+    command: python manage.py run_consumer_source
     volumes:
       - .:/app
     depends_on:
@@ -66,11 +68,12 @@ services:
     env_file:
       - .env.local
 
-  classifier:
+  consumer_classifier:
+    container_name: consumer_classifier
     build:
       context: .
       dockerfile: .docker/Dockerfile.classifier
-    command: python message_queue/consumers/classifier_source.py
+    command: python message_queue/consumers/consumer_source.py
     restart: always
     volumes:
       - .:/app

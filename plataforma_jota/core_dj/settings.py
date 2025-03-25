@@ -4,6 +4,8 @@ import dj_database_url
 import environ
 import logging
 
+logger = logging.getLogger(__name__)
+
 
 def configure_production_security():
     SECURE_HSTS_SECONDS = 3600  # 1 hora
@@ -16,19 +18,34 @@ def configure_production_security():
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
 
-# Inicializa environ
-env = environ.Env(
-    DEBUG=(bool, False),
-    SECRET_KEY=(str, 'default-secret-key-change-in-production'),
-    DATABASE_URL=(str, 'postgres://postgres:postgres@localhost:5432/postgres'),
-    RABBITMQ_URL=(str, 'amqp://guest:guest@localhost:5672/'),
-)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# Inicializa environ
+env = environ.Env(
+    MYSECRET=(str, '78cdsvc7sdavb07nvar87ynbdravs7by87yvb7ab09se7vybrsd7vyd9'),
+    DATABASE_URL=(str, 'postgres://postgres:postgres@localhost:5432/postgres'),
+    
+    RABBITMQ_URL=(str, 'amqp://guest:guest@localhost:5672/'),
+    EXCHANGE_NEWS=(str, 'jota_news_exchange'),
+
+    QUEUE_NEWS_INCOMING=(str, 'source_incoming'),
+    QUEUE_NEWS_CLASSIFICATION=(str, 'source_classification'),
+    QUEUE_NEWS_URGENCY=(str, 'new_notification'),
+    
+    ROUTING_KEY_INCOMING=(str, 'source.incoming'),
+    ROUTING_KEY_CLASSIFICATION=(str, 'source.classification'),
+    ROUTING_KEY_NOTIFICATION=(str, 'urgent.notification')
+)
 # Lê variáveis do arquivo .env
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env.local'))
+
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env('MYSECRET')
+
 
 # Inicializa o ambiente (pode ser 'development', 'production', etc.)
 ENVIRONMENT = env('ENVIRONMENT', default='development')
@@ -40,7 +57,7 @@ elif ENVIRONMENT == 'production':
     logging.basicConfig(level=logging.INFO)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY', default='your-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=True)
@@ -69,9 +86,7 @@ INSTALLED_APPS = [
 
     # Apps locais
     'news_app',
-    'news_source',
     'message_queue',
-    
 
     # Metricas
     'django_prometheus',
@@ -146,6 +161,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 LANGUAGE_CODE = 'pt-br'
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',  # Onde você vai armazenar os arquivos .po e .mo
+]
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_L10N = True
@@ -158,20 +176,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# RabbitMQ Configuration
-RABBITMQ = {
-    'URL': env('RABBITMQ_URL'),
-    'EXCHANGE': 'jota_news_exchange',
-    'QUEUE_NEWS_INCOMING': 'source_receiver',
-    'QUEUE_NEWS_CLASSIFICATION': 'source_classification',
-    'QUEUE_NEWS_URGENCY': 'new_notification',
-    'ROUTING_KEY_INCOMING': 'source.incoming',
-    'ROUTING_KEY_CLASSIFICATION': 'source.preprocess',
-    'ROUTING_KEY_NOTIFICATION': 'new.classification'
-}
-
-
 
 # Rest Framework
 REST_FRAMEWORK = {
@@ -215,3 +219,16 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'django_cache'),
     }
 }
+
+
+RABBITMQ_URL=env('RABBITMQ_URL', default='amqp://jota_user:jota_password@rabbitmq:5672/')
+EXCHANGE_NEWS=env('EXCHANGE_NEWS',default='jota_news_exchange')
+
+QUEUE_NEWS_INCOMING=env('QUEUE_NEWS_INCOMING',default='source_incoming')
+QUEUE_NEWS_CLASSIFICATION=env('QUEUE_NEWS_CLASSIFICATION',default='source_classification')
+QUEUE_NEWS_URGENCY=env('QUEUE_NEWS_URGENCY',default='urgent_notification')
+
+ROUTING_KEY_INCOMING=env('ROUTING_KEY_INCOMING', default='source.incoming')
+ROUTING_KEY_CLASSIFICATION=env('ROUTING_KEY_CLASSIFICATION',default='source.classification')
+ROUTING_KEY_NOTIFICATION=env('ROUTING_KEY_NOTIFICATION',default='urgent.notification')
+

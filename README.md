@@ -1,3 +1,37 @@
+# Desafio - Jota News Processor
+
+Este é um exemplo de processamento e classificação de notícias em texto utilizando a linguagem de programação Python, com o framework Django e utilizando classificaçao automatizada de textos (PLN).
+
+Abordagem com base :
+Utilizarei Django e Mensageria para dividir as responsabidade de processamento.
+
+Projeto pessoal de exemplo para  auto processamento - [Face Recognition Full Time CFTV](https://github.com/edcastanha/Distributed-Services-Face-Detection-Recognition)
+
+
+Tratamentos de Texto:
+
+- [X] Tokenização: Divisão do texto em palavras.
+- [X] Remoção de Stopwords: Remoção de palavras irrelevantes.
+- []Stemming: Redução de palavras à sua raiz.
+- []Lematização: Redução de palavras à sua forma base.
+- [X]Remoção de Caracteres Especiais: Remoção de pontuações e caracteres especiais.
+
+Classificação de Textos:
+
+- [ ] STF - PLN 
+
+
+
+
+
+## Requisitos:
+    * Ambiente operacional com Docker
+    * Git
+
+## Start - Docker
+    * ![Clone o repositorio](https://github.com/edcastanha/NewsAgentsTeam)
+    No terminal
+
 # AgentsTeamNews
 
 Atores, artefatos, internos e externos, que interagem com a plataforma para processamento. Integrada via API para entrega de notícias.
@@ -10,7 +44,7 @@ Atores, artefatos, internos e externos, que interagem com a plataforma para proc
 
 Este diagrama representa o nível mais alto do modelo C4, fornecendo uma visão geral do sistema de processamento de notícias do Jota e suas interações com entidades externas.
 
-![C4 - Contexto do Sistema](./docs/img/C4-Context.png)
+![C4 - Contexto do Sistema](./docs/img/Context.png)
 
 
 **Entidades:**
@@ -34,3 +68,8 @@ Este diagrama representa o nível mais alto do modelo C4, fornecendo uma visão 
 * O **WhatsApp Notifier consome do **Message Queue****  para enviar notificações de notícias urgentes para o  **WhatsApp Service** .
 
 ---
+
+## FONTES:
+
+* NLP - Processamento de Linguagem Natural -
+* [Lib nltk ](https://www.nltk.org/howto/classify.html)

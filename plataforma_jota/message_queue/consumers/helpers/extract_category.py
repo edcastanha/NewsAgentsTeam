@@ -2,7 +2,7 @@ import re
 import logging
 from collections import Counter
 from django.utils.text import slugify
-from news_app.models import Category, Subcategory
+from news_app.models import Category
 
 logger = logging.getLogger(__name__)
 
@@ -43,14 +43,14 @@ class CategoryClassifier:
     }
     
     # TODO - Dicionário de subcategorias e suas palavras-chave
-    SUBCATEGORY_KEYWORDS = {
-        'aposta da semana': [
-            'aposta', 'semana', 'previsão', 'análise', 'expectativa'
-        ],
-        'matinal': [
-            'matinal', 'manhã', 'hoje', 'diário', 'resumo'
-        ]
-    }
+    #SUBCATEGORY_KEYWORDS = {
+    #    'aposta da semana': [
+    #        'aposta', 'semana', 'previsão', 'análise', 'expectativa'
+    #    ],
+    #    'matinal': [
+    #        'matinal', 'manhã', 'hoje', 'diário', 'resumo'
+    #    ]
+    #}
     
     def __init__(self):
         # Garantir que as categorias existem no banco de dados
@@ -66,20 +66,7 @@ class CategoryClassifier:
                 slug=slugify(category_name)
             )
             
-        # Garantir que subcategorias existem
-        tributos = Category.objects.get(slug='tributos')
-        Subcategory.objects.get_or_create(
-            name='Aposta da Semana',
-            slug='aposta-da-semana',
-            category=tributos
-        )
         
-        # Subcategoria matinal pode pertencer a qualquer categoria
-        for category in Category.objects.all():
-            Subcategory.objects.get_or_create(
-                name='Matinal',
-                slug='matinal',
-                category=category
             )
     
     def preprocess_text(self, text):
@@ -92,9 +79,7 @@ class CategoryClassifier:
         Returns:
             str: Texto processado em minúsculas e sem caracteres especiais
         """
-        if not text:
-            return ""
-            
+       
         # Converter para minúsculas
         text = text.lower()
         

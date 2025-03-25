@@ -1,0 +1,32 @@
+*relogio
+Quantas horas são
+Quantas horas é
+Quantas horas são agora
+Que horas são
+Que horas é agora
+Que horas são agora
+Agora são que horas
+Agora é que horas
+*calendario
+Que dia é hoje
+Que dia é
+Hoje é que dia
+Qual o dia de hoje
+Qual é o dia de hoje
+*pesquisa
+Quem é
+Quem foi
+Quem são
+Quem era
+Quem iria
+Quem irá
+Quem descobriu
+Quem inventou
+Qual é
+Quando foi
+Quando será
+Quando seria
+Por que
+De Quem
+Qual a
+Qual o

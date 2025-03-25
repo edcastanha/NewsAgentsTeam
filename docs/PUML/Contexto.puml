@@ -1,0 +1,50 @@
+@startuml
+!theme aws-orange
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Diagrama de Container - Desafio Jota
+
+Person(admin, "Administrator", $sprite="person", $link="")
+
+Person_Ext(sources1, "Portas de Noticias", $sprite="robot", $link="")
+Person_Ext(sources2, "Redes Sociais", $sprite="robot", $link="")
+Person_Ext(sources3, "Agentes de Noticias", $sprite="person2", $link="")
+
+
+System_Boundary(c1, "WHATSAPP", $link="") {
+    Container_Ext(API, "API", $descr="Permite que os usuários revisem e modifiquem registros por meio da área administrativa", $link="")
+}
+
+System_Boundary(c2, "Plataforma Jota News", $descr="Permite que os usuários revisem e modifiquem registros por meio da área administrativa", $link="") {
+    Container(api, "API / Web", "Python, Django", "Recebe notícias via webhook e publica na fila", "HTTPS")
+    ContainerDb(db, "Banco de Dados", "PostgreSQL", "Armazena notícias e metadados", "JDBC")
+    ContainerQueue(proccess, "Processador de Notícias", "api/https", "Consome Fontes, Processa e publica para classificação", "AMQP")
+    ContainerQueue(classifier, "Classificador de Notícias", "Python", "Consome Notícias e Realiza a classificação", "AMQP")
+    ContainerQueue(notification, "Avisos Urgentes de Notícias", "Python", "Consome Notícias Urgentes e Consume API Externa", "AMQP")
+
+}
+
+
+
+
+Rel(sources1, api, "Publica", "API/HTTPS")
+Rel(sources2, api, "Publica", "API/HTTPS")
+Rel(sources3, api, "Publica", "API/HTTPS")
+
+
+Rel(api, db, "Armazena", "Postegras/RDS")
+Rel(proccess, db, "Armazena Dados Brutos de Fonte e Dados de Noticias para Classifica", "Python")
+Rel(classifier, db, "Armazena Dados", "Python")
+Rel(db, notification,  "Registro de Tarefa na Fila de Notificação", "Signal")
+
+
+Rel( notification, c1,  "Consome API externa", "API/HTTPS")
+
+Rel(admin, api, "Acessa", "Web/HTTPS")
+
+
+SHOW_LEGEND()
+
+
+@enduml

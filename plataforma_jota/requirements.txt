@@ -1,7 +1,7 @@
 amqp==5.3.1
 asgiref==3.8.1
 billiard==4.2.1
-boto3-1.37.18
+boto3==1.37.18
 celery==5.3.6
 certifi==2025.1.31
 charset-normalizer==3.4.1
