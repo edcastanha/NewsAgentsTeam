@@ -55,7 +55,7 @@ services:
     build:
       context: .
       dockerfile: .docker/Dockerfile.receiver
-    command: python message_queue/consumers/proccess_receiver.py
+    command: python message_queue/consumers/process_receiver.py
     volumes:
       - .:/app
     depends_on:
