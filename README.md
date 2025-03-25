@@ -28,9 +28,23 @@ Classificação de Textos:
     * Ambiente operacional com Docker
     * Git
 
-## Start - Docker
-    * ![Clone o repositorio](https://github.com/edcastanha/NewsAgentsTeam)
-    No terminal
+## Iniciando Projeto:
+      
+    *  No terminal:
+    '''
+      git clone https://github.com/edcastanha/NewsAgentsTeam
+      cd NewsAgentsTeam
+      docker compose -f 'plataforma_jota\docker-compose.yml' up -d --build 
+      docker ps
+      docker exec -it api  /bin/bash
+      python manage.py migrate
+      python setup.py
+      '''
+Estanciaremos os containers, realizaremos a migracao das classes para o banco de dados e criaremos o usuario: 'admin' com senha: 'admin'.
+
+No seu navegador: http://localhost:8000/admin
+
+No arquivo CAMINHO: 'docs\api_rest.http' temos os endpoint de teste inicial
 
 # AgentsTeamNews
 
