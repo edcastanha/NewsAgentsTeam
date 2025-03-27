@@ -19,7 +19,7 @@ curl -X POST -H "Content-Type: application/json"
 -d '{"username": "edson.filho", "password": "mudar1234"}' {{url}}api/get-token/
 
 
-###
+### Erro para POST na Rota
 POST {{url}}api/news/ HTTP/1.1
 content-type: application/json
 Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb
@@ -31,7 +31,7 @@ content-type: application/json
 Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb
 
 ###
-#Insert DAta Source ( POST )
+#Insert Data Source ( POST )
 POST {{url}}api/source/ HTTP/1.1
 Content-type: application/json
 Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb
@@ -103,7 +103,7 @@ Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb
 
 
 
-###
+### Erreo JSON
 curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Token 47ebb69b18c43490af76f0c254d3d19fe45209bb" \

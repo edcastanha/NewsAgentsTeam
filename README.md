@@ -12,9 +12,9 @@ Tratamentos de Texto:
 
 - [X] Tokenização: Divisão do texto em palavras.
 - [X] Remoção de Stopwords: Remoção de palavras irrelevantes.
-- []Stemming: Redução de palavras à sua raiz.
-- []Lematização: Redução de palavras à sua forma base.
-- [X]Remoção de Caracteres Especiais: Remoção de pontuações e caracteres especiais.
+- [-] Stemming: Redução de palavras à sua raiz.
+- [-] Lematização: Redução de palavras à sua forma base.
+- [X] Remoção de caracteres especiais e pontuações.
 
 Classificação de Textos:
 
