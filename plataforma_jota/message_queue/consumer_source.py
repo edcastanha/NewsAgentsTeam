@@ -4,7 +4,7 @@ from interface.rabbitmq.manager import RabbitMQConnectionManager
 from message_queue.interface.aws.manager import SQSSNSConnectionManager
 from message_queue.consumers.rabbitmq_consumer import RabbitMQConsumer
 from message_queue.consumers.sqs_consumer import SQSConsumer
-from message_queue.interface.consumer import MessageProcessor
+#from message_queue.interface.consumer import MessageProcessor
 from message_queue.consumers.helpers.process_receiver import NewsProcessor
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,11 @@ class SourceConsumer:
             raise ValueError(f"Provedor de mensagens desconhecido: {self.provider}")
 
     def start_consuming(self):
-        self.consumer.consume_messages()
+        print(self.consumer)
+
+        # 
+        #self.consumer.process_messages()
+        
 
 if __name__ == '__main__':
     # Escolha o provedor de mensagens (RabbitMQ ou SQS)
