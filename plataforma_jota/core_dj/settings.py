@@ -86,6 +86,7 @@ INSTALLED_APPS = [
 
     # Apps locais
     'news_app',
+    'message_queue',
     
     # Metricas
     'django_prometheus',

@@ -23,23 +23,35 @@ class NewsProcessor(MessageProcessor):
     def process_message(self, message):
         try:
             news_data_raw = message
-            news_id = news_data_raw.get('news_id')
             title = news_data_raw.get('titulo')  # Assumindo um campo 'titulo'
             content = news_data_raw.get('conteudo')  # Assumindo um campo 'conteudo'
-
+            logger.debug(f"Mensagem recebida: {news_data_raw}")
+            logger.debug(f"Título: {title}")
+            logger.debug(f"Conteúdo: {content}")
+            
 
             if not title or not content:
                 logger.error(f"Título ou conteúdo ausente na mensagem: {news_data_raw}")
                 raise ValueError("Título ou conteúdo ausente")
-
+            
+            # Normalizar título e conteúdo
             title_normalized = self.normalize_text(title)
             content_normalized = self.normalize_text(content)
+            
+            # Criando registro de Source - retornando apenas o id
+            new_fonte = Source.objects.create(
+                raw_data=news_data_raw,
+                clean_data= {'titulo': title_normalized, 'conteudo': content_normalized} ,    
+                name_source = news_data_raw.get('fonte')
+            )
+            
             #criar json com registro de source e campos titulo e conteudo normalizados
 
-
+            logger.debug(f"Título normalizado: {title_normalized}")
+            logger.debug(f"Conteúdo normalizado: {content_normalized}")
 
             # Publicar mensagem para a fila de classificação (conterá o ID da Source)
-            self.publish_classification_task(source.id, title_normalized, content_normalized)
+            self.publish_classification_task(new_fonte.id, title_normalized, content_normalized)
 
         except json.JSONDecodeError:
             logger.error(f"Erro ao decodificar JSON: {message}")
@@ -60,6 +72,7 @@ class NewsProcessor(MessageProcessor):
 
     def publish_classification_task(self, news_id, title_normalized, content_normalized):
         message = json.dumps({'source_id': news_id, 'title_normalized': title_normalized, 'content_normalized': content_normalized})
+        logger.debug(f"Mensagem para classificação publicada: {message}")
         success = self.publisher.publish_message(
             message=message,
             exchange=settings.EXCHANGE_NEWS,

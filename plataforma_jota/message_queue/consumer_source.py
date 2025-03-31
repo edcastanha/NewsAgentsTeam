@@ -40,6 +40,7 @@ class SourceConsumer:
 
     def start_consuming(self):
         print(self.consumer)
+        print("Start END ------------ Consumer Source")
 
         # 
         #self.consumer.process_messages()
