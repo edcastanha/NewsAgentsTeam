@@ -54,5 +54,5 @@ class Command(BaseCommand): #Classe Command no nivel superior
 
     def handle(self, *args, **options):
         provider = options['provider']
-        source_consumer = SourceConsumer(provider)
+        source_consumer = RunSourceConsumer(provider)
         source_consumer.start_consuming()
