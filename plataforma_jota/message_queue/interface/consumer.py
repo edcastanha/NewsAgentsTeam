@@ -28,6 +28,7 @@ class MessageConsumer(abc.ABC):
         """Callback genérico para processar mensagens."""
         try:
             message = json.loads(body.decode())
+            logger.debug(f" ----- --------- Mensagem recebida: --------- ----- :: /n {message}")
             self.message_processor.process_message(message)
             ch.basic_ack(delivery_tag=method.delivery_tag)  # Confirma o recebimento
         except json.JSONDecodeError:

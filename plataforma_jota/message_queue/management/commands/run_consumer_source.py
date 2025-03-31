@@ -1,16 +1,21 @@
 import logging
 from django.conf import settings
 from django.core.management.base import BaseCommand #Importação correta
+
 from message_queue.interface.rabbitmq.manager import RabbitMQConnectionManager
-from message_queue.interface.aws.manager import SQSSNSConnectionManager
 from message_queue.consumers.rabbitmq_consumer import RabbitMQConsumer
+
+from message_queue.interface.aws.manager import SQSSNSConnectionManager
 from message_queue.consumers.sqs_consumer import SQSConsumer
+
 from message_queue.interface.consumer import MessageProcessor
 from message_queue.consumers.helpers.process_receiver import NewsProcessor
+
 from message_queue.news_publishers import BreakingNewsPublisher
+
 logger = logging.getLogger(__name__)
 
-class SourceConsumer:
+class RunSourceConsumer:
     def __init__(self, provider="rabbitmq"):
         self.provider = provider
         self.connection_manager = self._get_connection_manager()
