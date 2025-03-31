@@ -57,6 +57,7 @@ services:
       context: .
       dockerfile: .docker/Dockerfile.receiver
     #command: python message_queue/consumer_source.py
+    #/app/message_queue/consumer_source.py
     command: python manage.py run_consumer_source
     volumes:
       - .:/app
